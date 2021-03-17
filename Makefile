@@ -1,5 +1,6 @@
 AKASH_NET := https://raw.githubusercontent.com/ovrclk/net/master/mainnet
-AKASH_VERSION=$(shell curl -s "$(AKASH_NET)/version.txt")
+#AKASH_VERSION=$(shell curl -s "$(AKASH_NET)/version.txt")
+AKASH_VERSION := 0.10.2
 AKASH_NODE=$(shell curl -s "$(AKASH_NET)/rpc-nodes.txt" | sort -R | head -1)
 AKASH_CHAIN_ID=$(shell curl -s "$(AKASH_NET)/chain-id.txt")
 
@@ -45,7 +46,11 @@ revoke_certificate:
 	$(AKASH_BIN) tx cert revoke --chain-id=$(AKASH_CHAIN_ID) --from=$(KEY_NAME) --node=$(AKASH_NODE) --fees=$(FEES) ${KEYRING_OPT}
 
 create_deployment:
-	$(AKASH_BIN) tx deployment create $(DEPLOY_ROOT)/deploy.yml --from $(KEY_NAME) --node $(AKASH_NODE) --chain-id $(AKASH_CHAIN_ID) --fees $(FEES) ${KEYRING_OPT}
+	$(AKASH_BIN) tx deployment create $(DEPLOY_ROOT)/deploy.yml --from $(KEY_NAME) --fees $(FEES) ${KEYRING_OPT}
+
+deploy_nobid:
+	$(AKASH_BIN) deploy create $(DEPLOY_ROOT)/deploy.yml --from $(KEY_NAME) --node $(AKASH_NODE) --chain-id $(AKASH_CHAIN_ID) --fees $(FEES) ${KEYRING_OPT}
+
 
 update_deployment:
 	$(AKASH_BIN) tx deployment update $(DEPLOY_ROOT)/deploy.yml --from $(KEY_NAME) --node $(AKASH_NODE) --chain-id $(AKASH_CHAIN_ID) --fees $(FEES) ${KEYRING_OPT} --dseq ${DSEQ}

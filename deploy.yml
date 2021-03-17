@@ -3,12 +3,12 @@ version: "2.0"
 
 services:
   web:
-    image: tombeynon/akash-hello-world:release-v0.1.1
+    image: teeyeeyang/akash-personal-site:latest
     expose:
       - port: 80
         as: 80
-        accept:
-          - akashhw.tombeynon.co.uk
+        accept: 
+          - teeyeeyang.com
         to:
           - global: true
 
@@ -32,7 +32,7 @@ profiles:
       pricing:
         web:
           denom: uakt
-          amount: 100
+          amount: 1
 
 deployment:
   web:
