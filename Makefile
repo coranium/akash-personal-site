@@ -35,6 +35,9 @@ create_wallet:
 recover_wallet:
 	$(AKASH_BIN) keys add "$(KEY_NAME)" --recover ${KEYRING_OPT}
 
+send_token:
+	$(AKASH_BIN) tx send $(AKASH_ADDRESS) $(TO_ADDRESS) $(AMOUNT) --chain-id=$(AKASH_CHAIN_ID) --node "$(AKASH_NODE)" --fees $(FEES) --gas=auto ${KEYRING_OPT}
+
 balance:
 	@test $${AKASH_ADDRESS?Please set environment variable AKASH_ADDRESS}
 	$(AKASH_BIN) query bank balances "$(AKASH_ADDRESS)" --node "$(AKASH_NODE)"
@@ -49,11 +52,11 @@ create_deployment:
 	$(AKASH_BIN) tx deployment create $(DEPLOY_ROOT)/deploy.yml --from $(KEY_NAME) --fees $(FEES) ${KEYRING_OPT}
 
 deploy_nobid:
-	$(AKASH_BIN) deploy create $(DEPLOY_ROOT)/deploy.yml --from $(KEY_NAME) --node $(AKASH_NODE) --chain-id $(AKASH_CHAIN_ID) --fees $(FEES) ${KEYRING_OPT}
+	$(AKASH_BIN) deploy create $(DEPLOY_ROOT)/deployml.yml --from $(KEY_NAME) --node $(AKASH_NODE) --chain-id $(AKASH_CHAIN_ID) --fees $(FEES) ${KEYRING_OPT}
 
 
 update_deployment:
-	$(AKASH_BIN) tx deployment update $(DEPLOY_ROOT)/deploy.yml --from $(KEY_NAME) --node $(AKASH_NODE) --chain-id $(AKASH_CHAIN_ID) --fees $(FEES) ${KEYRING_OPT} --dseq ${DSEQ}
+	$(AKASH_BIN) tx deployment update $(DEPLOY_ROOT)/deployml.yml --from $(KEY_NAME) --node $(AKASH_NODE) --chain-id $(AKASH_CHAIN_ID) --fees $(FEES) ${KEYRING_OPT} --dseq ${DSEQ}
 
 close_deployment:
 	$(AKASH_BIN) tx deployment close --from $(KEY_NAME) --node $(AKASH_NODE) --chain-id $(AKASH_CHAIN_ID) --fees $(FEES) ${KEYRING_OPT} --dseq ${DSEQ} --gas=auto
@@ -81,4 +84,4 @@ lease_logs:
 	$(AKASH_BIN) provider lease-logs --node $(AKASH_NODE) --from $(KEY_NAME) --dseq $(DSEQ) --oseq $(OSEQ) --gseq $(GSEQ) --provider $(PROVIDER) ${KEYRING_OPT}
 
 send_manifest:
-	$(AKASH_BIN) provider send-manifest $(DEPLOY_ROOT)/deploy.yml --node $(AKASH_NODE) --dseq $(DSEQ)  --from $(KEY_NAME) --provider $(PROVIDER) $(KEYRING_OPT)
+	$(AKASH_BIN) provider send-manifest $(DEPLOY_ROOT)/deployml.yml --node $(AKASH_NODE) --dseq $(DSEQ)  --from $(KEY_NAME) --provider $(PROVIDER) $(KEYRING_OPT)
